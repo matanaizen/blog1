@@ -1,13 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const connectDB = require('./config/database');
 
 const app = express();
 app.use(express.json());
 
-// Connect to MongoDB
-connectDB();
+const MONGODB_URI = process.env.MONGODB_URI;
+
+//Connect to MongoDB
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => console.log("Successfully connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Import routes
 const postRoutes = require('./routes/posts');
@@ -22,12 +26,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
-  console.log('UNHANDLED REJECTION! 💥 Shutting down...');
-  console.log(err.name, err.message);
-  server.close(() => {
-    process.exit(1);
-  });
-}); 

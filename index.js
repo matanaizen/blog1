@@ -7,7 +7,7 @@ app.use(express.json());
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-// Connect to MongoDB with updated connection handling
+//Connect to MongoDB
 mongoose
   .connect(MONGODB_URI)
   .then(() => console.log("Successfully connected to MongoDB"))
@@ -15,9 +15,11 @@ mongoose
 
 // Import routes
 const postRoutes = require('./routes/posts');
+const commentRoutes = require('./routes/comments');
 
 // Use routes
 app.use('/posts', postRoutes);
+app.use('/comments', commentRoutes);
 
 const PORT = process.env.PORT || 3000;
 

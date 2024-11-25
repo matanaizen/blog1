@@ -1,9 +1,11 @@
+const Mongoose  = require('mongoose');
 const Comment = require('../models/Comment');
 
 const commentController = {
   // Create a new comment
   createComment: async (req, res) => {
     try {
+      console.log(req.body)
       const comment = new Comment(req.body);
       const savedComment = await comment.save();
       res.status(201).json(savedComment);
@@ -15,7 +17,7 @@ const commentController = {
   // Get all comments for a post
   getPostComments: async (req, res) => {
     try {
-      const comments = await Comment.find({ postId: req.params.postId });
+      const comments = await Comment.find({ postId: new Mongoose.Types.ObjectId(req.params.postId) });
       res.json(comments);
     } catch (error) {
       res.status(500).json({ message: error.message });
